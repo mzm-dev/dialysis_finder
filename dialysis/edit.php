@@ -1,19 +1,9 @@
 <?php
 include_once '../lib/dbconfig.php';
-if (isset($_POST['btn-save'])) {
-
-    //print_r($_POST);
-    // keep track validation errors
-    $namaPusat = null;
-    $alamat = null;
-    $namaPengurus = null;
-    $emel = null;
-    $telPejabat = null;
-    $telBimbit = null;
-    $xCoor = null;
-    $yCoor = null;
+if (isset($_POST['btn-update'])) {
 
     // keep track post values
+    $id = $_GET['edit_id'];
     $namaPusat = $_POST['pusat'];
     $alamat = $_POST['alamat'];
     $namaPengurus = $_POST['pengurus'];
@@ -23,7 +13,7 @@ if (isset($_POST['btn-save'])) {
     $xCoor = $_POST['lat'];
     $yCoor = $_POST['lng'];
 
-    
+
     // validate input
     $valid = true;
 
@@ -75,11 +65,11 @@ if (isset($_POST['btn-save'])) {
         $valid = false;
     }
     if ($valid) {
-        if ($dialysis->createDialysis($namaPusat, $alamat, $namaPengurus, $emel, $telPejabat, $telBimbit, $xCoor, $yCoor)) {
+        if ($dialysis->updateDialysis($id,$namaPusat, $alamat, $namaPengurus, $emel, $telPejabat, $telBimbit, $xCoor, $yCoor)) {
             //header("Location: add.php?inserted");
             $msg = '<div class="alert alert-success alert-dismissable">' .
                     '<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>' .
-                    '<strong>WOW!</strong> Record was inserted successfully <a href="index.php">HOME</a>!' .
+                    '<strong>WOW!</strong> Record was updated successfully <a href="index.php">HOME</a>!' .
                     '</div>';
         } else {
             //header("Location: add.php?failure");
@@ -89,6 +79,10 @@ if (isset($_POST['btn-save'])) {
                     '</div>';
         }
     }
+}
+if (isset($_GET['edit_id'])) {
+    $id = $_GET['edit_id'];
+    extract($dialysis->getDialysisID($id));
 }
 ?>
 <?php include_once '../inc/header.php'; ?>
@@ -101,7 +95,7 @@ if (isset($_POST['btn-save'])) {
 </style>
 <div class="container-fluid">   
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar"><?php require_once '../inc/sidebar.php'; ?></div>
+        <div class="col-sm-3 col-md-2 sidebar"><?php require_once '../inc/sidebar.php';  ?></div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">Dashboard</h1>
             <?php
@@ -111,7 +105,7 @@ if (isset($_POST['btn-save'])) {
             ?>
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Daftar Pusat Dialisis</h3>
+                    <h3 class="panel-title">Kemaskini Pusat Dialisis</h3>
                     <div class="panel-tools pull-right">
                         <a href="index.php" class="btn btn-sm btn-default"> Back</a>                            
                     </div>
@@ -122,21 +116,21 @@ if (isset($_POST['btn-save'])) {
                             <label for="inputPusat">Nama Pusat Dialisis</label>
                             <input name="pusat" id="inputPusat" type="text"
                                    class="form-control"  placeholder="Nama Pusat Dialisis" 
-                                   value="<?php echo (!empty($namaPusat) ? $namaPusat : ''); ?>">                        
+                                   value="<?php echo $nama_pusat; ?>">                        
                             <?php if (!empty($namaPusatError)): ?><span class="help-block"><?php echo $namaPusatError; ?></span><?php endif; ?>
                         </div>
                         <div class="required form-group <?php echo (!empty($namaPengurusError) ? 'has-error' : ''); ?>">
                             <label for="inputPengurus">Nama Pengurus</label>
                             <input name="pengurus" id="inputPengurus" type="text"
                                    class="form-control"  placeholder="Nama Pusat Dialisis" 
-                                   value="<?php echo (!empty($namaPengurus) ? $namaPengurus : ''); ?>">                        
+                                   value="<?php echo $nama_pengurus; ?>">                        
                             <?php if (!empty($namaPengurusError)): ?><span class="help-block"><?php echo $namaPengurusError; ?></span><?php endif; ?>
                         </div>
                         <div class="required form-group <?php echo (!empty($emelError) ? 'has-error' : ''); ?>">
                             <label for="inputEmel">Alamat Emel</label>
                             <input name="email" id="inputEmel" type="text"
                                    class="form-control"  placeholder="xam@example.com" 
-                                   value="<?php echo (!empty($emel) ? $emel : ''); ?>">                        
+                                   value="<?php echo $emel; ?>">                        
                             <?php if (!empty($emelError)): ?><span class="help-block"><?php echo $emelError; ?></span><?php endif; ?>
                         </div>
 
@@ -146,7 +140,7 @@ if (isset($_POST['btn-save'])) {
                                     <label for="inputAlamat">Alamat</label>
                                     <textarea rows="5" name="alamat" id="inputAlamat" type="text"
                                               class="form-control" 
-                                              placeholder="Alamat Penuh Pusat Dialisis"><?php echo (!empty($alamat) ? $alamat : ''); ?></textarea>
+                                              placeholder="Alamat Penuh Pusat Dialisis"><?php echo $alamat; ?></textarea>
                                     <?php if (!empty($alamatError)): ?><span class="help-block"><?php echo $alamatError; ?></span><?php endif; ?>
                                 </div>
 
@@ -156,7 +150,7 @@ if (isset($_POST['btn-save'])) {
                                     <label for="inputPejabat">No Telefon Pejabat</label>
                                     <input name="pejabat" id="inputPejabat" type="text"
                                            class="form-control"  placeholder="0377779977" 
-                                           value="<?php echo (!empty($telPejabat) ? $telPejabat : ''); ?>">                        
+                                           value="<?php echo $tel_pejabat; ?>">                        
                                     <?php if (!empty($telPejabatError)): ?><span class="help-block"><?php echo $telPejabatError; ?></span><?php endif; ?>
                                 </div>
 
@@ -164,7 +158,7 @@ if (isset($_POST['btn-save'])) {
                                     <label for="inputKoordinatX">Koordinat X</label>
                                     <input name="lat" id="inputKoordinatX" type="text"
                                            class="form-control"  placeholder="2.935383" 
-                                           value="<?php echo (!empty($xCoor) ? $xCoor : ''); ?>">                        
+                                           value="<?php echo $x_coor; ?>">                        
                                     <?php if (!empty($xCoorError)): ?><span class="help-block"><?php echo $xCoorError; ?></span><?php endif; ?>
                                 </div>
                             </div>
@@ -174,21 +168,21 @@ if (isset($_POST['btn-save'])) {
                                     <label for="inputBimbit">No Telefon Bimbit</label>
                                     <input name="bimbit" id="inputBimbit" type="text"
                                            class="form-control"  placeholder="01777779977" 
-                                           value="<?php echo (!empty($telBimbit) ? $telBimbit : ''); ?>">                        
+                                           value="<?php echo $tel_bimbit; ?>">                        
                                     <?php if (!empty($telBimbitError)): ?><span class="help-block"><?php echo $telBimbitError; ?></span><?php endif; ?>
                                 </div>
                                 <div class="required form-group <?php echo (!empty($yCoorError) ? 'has-error' : ''); ?>">
                                     <label for="inputKoordinatY">Koordinat Y</label>
                                     <input name="lng" id="inputKoordinatY" type="text"
                                            class="form-control"  placeholder="101.694343" 
-                                           value="<?php echo (!empty($yCoor) ? $yCoor : ''); ?>">                        
+                                           value="<?php echo $y_coor; ?>">                        
                                     <?php if (!empty($yCoorError)): ?><span class="help-block"><?php echo $yCoorError; ?></span><?php endif; ?>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success"  name="btn-save">Save</button>
+                            <button type="submit" class="btn btn-success"  name="btn-update">Update</button>
                             <button type="reset" class="btn btn-default">Reset</button>
                         </div>
                     </form>

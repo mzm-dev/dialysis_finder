@@ -31,6 +31,21 @@ body {
 .sidebar {
     display: none;
 }
+
+.sidebar .profile-username{
+    color: white;
+    font-size: 16px;
+}
+.sidebar .box-profile{
+    margin-bottom: 6px;
+}
+.sidebar-nav{
+    background: #1a2226 none repeat scroll 0 0;
+    color: #4b646f;   
+}
+.sidebar-nav li {
+    border-bottom: 1px solid #6a6c6f;
+}
 @media (min-width: 768px) {
     .sidebar {
         background-color: #434a54;
