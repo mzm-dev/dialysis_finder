@@ -18,8 +18,8 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nama Pusat</th>
-                                <th>Alamat</th>
                                 <th>Pengurus</th>
+                                <th>Alamat</th>
                                 <th>Telefon Pejabat</th>
                                 <th>Telefon Bimbit</th>
                                 <th>Tindakan</th>

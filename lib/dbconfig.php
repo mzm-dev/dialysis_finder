@@ -1,9 +1,13 @@
 <?php
 
 $DB_host = "localhost";
-$DB_user = "u824301713_dialy";
-$DB_pass = "8srlI5nzMKv=";
-$DB_name = "u824301713_dfind";
+$DB_user = "root";
+$DB_pass = "";
+$DB_name = "php_crud";
+//$DB_host = "localhost";
+//$DB_user = "u824301713_dialy";
+//$DB_pass = "8srlI5nzMKv=";
+//$DB_name = "u824301713_dfind";
 
 
 try {
@@ -18,4 +22,7 @@ $crud = new crud($DB_con);
 
 include_once 'class.dialysis.php';
 $dialysis = new dialysis($DB_con);
+
+include_once 'class.api.php';
+$api = new api($DB_con);
 ?>
